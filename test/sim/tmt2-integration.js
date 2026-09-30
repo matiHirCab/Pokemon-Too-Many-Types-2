@@ -9,6 +9,7 @@ describe('TMT-05 hidden catalog integration (not battle fidelity)', () => {
 	it('constructs isolated hidden format and preserves base formats', () => {
 		const format = Dex.formats.get(catalog.metadata.formatID);
 		assert.equal(format.mod, catalog.metadata.modID);
+		assert.equal(Dex.formats.getRuleTable(format).has('terastalclause'), true);
 		for (const field of ['searchShow', 'challengeShow', 'tournamentShow', 'rated']) assert.equal(format[field], false);
 		const battle = new Battle({ formatid: format.id });
 		assert.equal(battle.dex.currentMod, 'gen9tmt2seed');

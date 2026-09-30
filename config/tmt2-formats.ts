@@ -10,7 +10,7 @@ export const TMT2Formats: import('../sim/dex-formats').FormatList = [{
 	challengeShow: false,
 	tournamentShow: false,
 	desc: 'Hidden bounded Gen9 adaptation. TMT-05 integration only; battle legality/fidelity is not certified.',
-	ruleset: ['Team Preview', 'Min Team Size = 3', 'Max Team Size = 3', 'Default Level = 50', 'Max Level = 50'],
+	ruleset: ['Terastal Clause', 'Team Preview', 'Min Team Size = 3', 'Max Team Size = 3', 'Default Level = 50', 'Max Level = 50'],
 	onValidateSet(set) {
 		const record = Catalog.seed.species.find(s => s.id === this.dex.toID(set.species));
 		if (!record) return ['Species outside the bounded TMT2 seed.'];

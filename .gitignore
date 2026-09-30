@@ -1,5 +1,6 @@
 /config/*
 !/config/formats.ts
+!/config/tmt2-formats.ts
 /logs/**/*
 /test/modlogs
 /test/replays/*.html

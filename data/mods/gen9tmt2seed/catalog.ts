@@ -7,6 +7,7 @@ export interface SeedCatalog {
 		formatID: string, formatName: string, modID: string,
 	};
 	seed: {
+		teams: { id: string, sets: PokemonSet[] }[],
 		species: {
 			id: string, name: string, types: string[], baseStats: StatsTable, abilities: string[], learnset: string[],
 		}[],

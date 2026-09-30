@@ -9,7 +9,8 @@ export const Scripts: ModdedBattleScriptsData = {
 			Pokedex: new Set(Catalog.seed.species.map(s => s.id)),
 			Learnsets: new Set(Catalog.seed.species.map(s => s.id)),
 			FormatsData: new Set(Catalog.seed.species.map(s => s.id)),
-			Moves: new Set(Catalog.seed.moves.map(m => m.id)),
+			// Engine-only PP exhaustion fallback, never legal in an imported set/catalog.
+			Moves: new Set([...Catalog.seed.moves.map(m => m.id), 'struggle']),
 			Abilities: new Set(Catalog.seed.abilities.map(a => a.id)),
 			Items: new Set(Catalog.seed.items.map(i => i.id)),
 			TypeChart: new Set(Catalog.seed.types.map(t => t.id)),

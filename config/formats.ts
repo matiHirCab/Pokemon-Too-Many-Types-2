@@ -1,3 +1,5 @@
+import { TMT2Formats } from './tmt2-formats';
+
 // Note: This is the list of formats
 // The rules that formats use are stored in data/rulesets.ts
 /*
@@ -5985,4 +5987,5 @@ export const Formats: import('../sim/dex-formats').FormatList = [
 		battle: { trunc: Math.trunc },
 		ruleset: ['HP Percentage Mod', 'Cancel Mod', 'Desync Clause Mod', 'Max Team Size = 24', 'Max Move Count = 24', 'Max Level = 9999', 'Default Level = 100'],
 	},
+	...TMT2Formats,
 ];

@@ -97,3 +97,18 @@ Staff
 Contributors
 
 - See http://pokemonshowdown.com/credits
+
+## TMT2 hidden integration
+
+The isolated `gen9tmt2seed` mod and `[Gen 9] TMT2 Seed` format consume
+`data/mods/gen9tmt2seed/catalog.json`, generated from the validated bounded seed in
+`matiHirCab/tmt2-data`. It preserves ordered duplicate types and inherits ordinary
+Gen9 callbacks. The format is unrated and hidden from search/challenge/tournaments.
+Catalog membership guards are scaffolding; no-EV behavior, complete legality,
+ROM fidelity and a full battle/replay journey are **not** certified in TMT-05.
+
+Use the three sibling repositories and `tmt2-data`'s `integration:generate`,
+`integration:check`, `integration:assets`, `workspace:build`, and `ci:core` commands.
+Exact integration revisions live in its `ci/pins.json`; inherited facts retain
+separate original pins. Generated catalogs contain dataset and artifact hashes,
+not circular consumer commit IDs. Never regenerate from an unpinned upstream pull.

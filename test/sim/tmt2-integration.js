@@ -42,7 +42,7 @@ describe('TMT-05 hidden catalog integration (not battle fidelity)', () => {
 		assert.equal(validator.validateTeam(sets), null);
 		const bad = catalog.seed.teams[0].sets.map(s => ({ ...s, item: '' }));
 		bad[0].moves = ['surf'];
-		assert.ok(validator.validateTeam(bad));
+		assert(validator.validateTeam(bad));
 		let record;
 		Dex.formats.get(catalog.metadata.formatID).onBattleStart.call({ add(...args) { record = args; } });
 		assert.deepEqual(record, ['tmt2data', catalog.metadata.version, catalog.metadata.datasetHash, catalog.metadata.catalogHash]);

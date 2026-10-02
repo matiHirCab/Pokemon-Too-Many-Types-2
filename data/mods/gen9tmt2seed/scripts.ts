@@ -4,11 +4,12 @@ export const Scripts: ModdedBattleScriptsData = {
 	inherit: 'gen9',
 	gen: 9,
 	init() {
+		const speciesRecords = [...Catalog.seed.species, ...(Catalog.seed.forms || [])];
 		// Own the dictionaries before pruning; never mutate the parent Dex.
 		const allowed: { [table: string]: Set<string> } = {
-			Pokedex: new Set(Catalog.seed.species.map(s => s.id)),
-			Learnsets: new Set(Catalog.seed.species.map(s => s.id)),
-			FormatsData: new Set(Catalog.seed.species.map(s => s.id)),
+			Pokedex: new Set(speciesRecords.map(s => s.id)),
+			Learnsets: new Set(speciesRecords.map(s => s.id)),
+			FormatsData: new Set(speciesRecords.map(s => s.id)),
 			// Engine-only PP exhaustion fallback, never legal in an imported set/catalog.
 			Moves: new Set([...Catalog.seed.moves.map(m => m.id), 'struggle']),
 			Abilities: new Set(Catalog.seed.abilities.map(a => a.id)),
@@ -22,7 +23,7 @@ export const Scripts: ModdedBattleScriptsData = {
 		}
 		const typeNames = Object.fromEntries(Catalog.seed.types.map(t => [t.id, t.name]));
 		const abilityNames = Object.fromEntries(Catalog.seed.abilities.map(a => [a.id, a.name]));
-		for (const record of Catalog.seed.species) {
+		for (const record of speciesRecords) {
 			const species = this.modData('Pokedex', record.id);
 			species.types = record.types.map(id => typeNames[id]);
 			species.baseStats = { ...record.baseStats };
@@ -30,10 +31,14 @@ export const Scripts: ModdedBattleScriptsData = {
 			// Forms/evolutions outside this bounded catalog are not supported.
 			species.prevo = '';
 			species.evos = [];
-			delete species.otherFormes;
+			const forms = (Catalog.seed.forms || []).filter(f => f.baseSpecies === record.id);
+			if (forms.length) species.otherFormes = forms.map(f => f.name);
+			else delete species.otherFormes;
 			delete species.cosmeticFormes;
 			const learned = this.modData('Learnsets', record.id);
-			learned.learnset = Object.fromEntries(record.learnset.map(id => [id, learned.learnset![id]]));
+			const form = Catalog.seed.forms?.find(f => f.id === record.id);
+			const baseLearnset = form ? this.data.Learnsets[form.baseSpecies]?.learnset : learned.learnset;
+			learned.learnset = Object.fromEntries(record.learnset.map(id => [id, baseLearnset![id]]));
 			this.data.FormatsData[record.id] = {};
 		}
 		// Ordinary move/ability callbacks remain inherited, not generated from prose.

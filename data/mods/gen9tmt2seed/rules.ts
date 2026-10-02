@@ -19,7 +19,7 @@ export function premadeProblems(team: PokemonSet[]): string[] {
 		if (set.level !== 50) fail('Level must be exactly 50.');
 		if (toID(set.nature) !== toID(expected.nature)) fail('Nature must be Hardy.');
 		if (toID(set.ability) !== expected.ability) fail('Ability must match the premade.');
-		if (set.item && toID(set.item) !== 'none') fail('Held items are not supported.');
+		if ((toID(set.item) || 'none') !== expected.item) fail('Item must match the premade.');
 		if (!Array.isArray(set.moves) || set.moves.length !== 4 || set.moves.some(m => typeof m !== 'string') ||
 			set.moves.map(toID).sort().join() !== [...expected.moves].sort().join()) {
 			fail('Use all four premade moves, without duplicates.');
@@ -48,7 +48,8 @@ export function premadeProblems(team: PokemonSet[]): string[] {
 
 export function fillPremadeDefaults(team: PokemonSet[]) {
 	for (const set of team) {
-		set.item = '';
+		if (toID(set.item) === 'none') set.item = '';
+		else set.item = toID(set.item);
 		set.evs = Object.fromEntries(stats.map(s => [s, 0])) as StatsTable;
 		set.ivs = Object.fromEntries(stats.map(s => [s, 31])) as StatsTable;
 	}

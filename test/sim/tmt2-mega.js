@@ -53,6 +53,10 @@ const team = () => structuredClone(catalog.seed.teams[1].sets).map(s => ({ ...s,
 		assert.equal(p.runEffectiveness(b.dex.getActiveMove('rockthrow')), 3);
 		b.makeChoices('move gust mega', 'move protect');
 		assert.equal(p.runEffectiveness(b.dex.getActiveMove('rockthrow')), 3);
+		for (const [type, expected] of Object.entries({ Normal: 0, Dark: 1, Water: -1, Rock: 3, Electric: 2, Grass: -2, Flying: 0 })) {
+			const control = b.dex.getActiveMove('tackle'); control.type = type;
+			assert.equal(p.runEffectiveness(control), expected, `${type} versus Holy/Bird/Bird`);
+		}
 		const move = b.dex.getActiveMove('gust'); move.type = 'Bird'; move.willCrit = false;
 		b.randomizer = n => n;
 		const duplicated = b.actions.getDamage(p, target, move);

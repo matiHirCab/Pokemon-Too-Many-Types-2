@@ -40,7 +40,7 @@ export const Scripts: ModdedBattleScriptsData = {
 			if (!baseLearnset) throw new Error(`Missing selected base learnset: ${record.id}`);
 			// Mega forms have no own upstream learnset; create an owned dictionary.
 			this.data.Learnsets[record.id] = {
-				learnset: Object.fromEntries(record.learnset.map(id => [id, baseLearnset[id]])),
+				learnset: Object.fromEntries(record.learnset.map(id => [id, baseLearnset[id as ID]])),
 			};
 			this.data.FormatsData[record.id] = {};
 		}

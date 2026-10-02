@@ -5,7 +5,7 @@ const { TeamValidator } = require('../../dist/sim/team-validator');
 const { Teams } = require('../../dist/sim/teams');
 const catalog = require('../../data/mods/gen9tmt2seed/catalog.json');
 const id = catalog.metadata.formatID;
-const team = n => structuredClone(catalog.seed.teams[n].sets).map(s => ({ ...s, item: '' }));
+const team = n => structuredClone(catalog.seed.teams[n].sets).map(s => ({ ...s, item: s.item === 'none' ? '' : s.item }));
 function battle(a = 0, b = 1, leadA = 1, leadB = 1) {
 	const result = new Battle({ formatid: id, seed: [1, 2, 3, 4],
 		p1: { name: 'Alpha', team: team(a) }, p2: { name: 'Beta', team: team(b) } });
@@ -77,7 +77,7 @@ describe('TMT-06 bounded premade legality', () => {
 describe('TMT-06 actual mod runtime (approved Gen9 adaptation, not ROM oracle)', () => {
 	let b;
 	afterEach(() => { b?.destroy(); b = null; });
-	it('uses level50 IV31 EV0 Hardy stats for all six and disables transformations', () => {
+	it('uses level50 IV31 EV0 Hardy stats for all six and permits only the catalog-listed mega', () => {
 		b = battle();
 		for (const p of [...b.p1.pokemon, ...b.p2.pokemon]) {
 			for (const [stat, base] of Object.entries(p.species.baseStats)) {
@@ -85,7 +85,7 @@ describe('TMT-06 actual mod runtime (approved Gen9 adaptation, not ROM oracle)',
 				assert.equal(stat === 'hp' ? p.maxhp : p.storedStats[stat], expected);
 			}
 			assert.equal(p.canTerastallize, null);
-			assert.equal(p.getItem().id, '');
+			assert.equal(p.getItem().id, p.species.id === 'pidgeot' ? 'pidgeotite' : '');
 		}
 		assert.throws(() => b.makeChoices('move tackle terastallize', 'move tackle'), /Not all choices done/);
 	});

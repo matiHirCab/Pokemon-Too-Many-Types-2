@@ -35,10 +35,13 @@ export const Scripts: ModdedBattleScriptsData = {
 			if (forms.length) species.otherFormes = forms.map(f => f.name);
 			else delete species.otherFormes;
 			delete species.cosmeticFormes;
-			const learned = this.modData('Learnsets', record.id);
 			const form = Catalog.seed.forms?.find(f => f.id === record.id);
-			const baseLearnset = form ? this.data.Learnsets[form.baseSpecies]?.learnset : learned.learnset;
-			learned.learnset = Object.fromEntries(record.learnset.map(id => [id, baseLearnset![id]]));
+			const baseLearnset = this.data.Learnsets[form?.baseSpecies || record.id]?.learnset;
+			if (!baseLearnset) throw new Error(`Missing selected base learnset: ${record.id}`);
+			// Mega forms have no own upstream learnset; create an owned dictionary.
+			this.data.Learnsets[record.id] = {
+				learnset: Object.fromEntries(record.learnset.map(id => [id, baseLearnset[id]])),
+			};
 			this.data.FormatsData[record.id] = {};
 		}
 		// Ordinary move/ability callbacks remain inherited, not generated from prose.

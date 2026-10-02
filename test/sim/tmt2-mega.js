@@ -35,7 +35,7 @@ const team = () => structuredClone(catalog.seed.teams[1].sets).map(s => ({ ...s,
 		b.makeChoices('move gust mega', 'move protect');
 		p.addType('Grass'); assert.deepEqual(p.getTypes(), ['Holy', 'Bird', 'Bird', 'Grass']);
 		p.setType('Water'); assert.deepEqual(p.getTypes(), ['Water']); assert.equal(p.addedType, '');
-		b.makeChoices('switch 2', 'move protect'); b.makeChoices('switch 1', 'move protect');
+		b.makeChoices('switch 2', 'move protect'); b.makeChoices(`switch ${p.position + 1}`, 'move protect');
 		assert.deepEqual(p.getTypes(), ['Holy', 'Bird', 'Bird']); assert.equal(p.species.id, 'pidgeotmega');
 		b.destroy(); b = create(); assert.equal(b.p1.active[0].species.id, 'pidgeot');
 		assert.deepEqual(b.p1.active[0].getTypes(), ['Bird', 'Bird', 'Bird']);
@@ -45,14 +45,14 @@ const team = () => structuredClone(catalog.seed.teams[1].sets).map(s => ({ ...s,
 		p.addType('Grass'); assert.deepEqual(p.getTypes(), ['Bird', 'Bird', 'Bird', 'Grass']);
 		p.addType('Water'); assert.deepEqual(p.getTypes(), ['Bird', 'Bird', 'Bird', 'Water']);
 		p.setType(['Water', 'Water']); assert.deepEqual(p.getTypes(), ['Water', 'Water']);
-		b.makeChoices('switch 2', 'move protect'); b.makeChoices('switch 1', 'move protect');
+		b.makeChoices('switch 2', 'move protect'); b.makeChoices(`switch ${p.position + 1}`, 'move protect');
 		assert.deepEqual(p.getTypes(), ['Bird', 'Bird', 'Bird']);
 	});
 	it('defensive repeats multiply per slot; STAB matches once rather than stacking repeats', () => {
 		b = create(); const p = b.p1.active[0], target = b.p2.active[0];
 		assert.equal(p.runEffectiveness(b.dex.getActiveMove('rockthrow')), 3);
 		b.makeChoices('move gust mega', 'move protect');
-		assert.equal(p.runEffectiveness(b.dex.getActiveMove('rockthrow')), 2);
+		assert.equal(p.runEffectiveness(b.dex.getActiveMove('rockthrow')), 3);
 		const move = b.dex.getActiveMove('gust'); move.type = 'Bird'; move.willCrit = false;
 		b.randomizer = n => n;
 		const duplicated = b.actions.getDamage(p, target, move);

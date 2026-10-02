@@ -10,7 +10,7 @@ export const TMT2Formats: import('../sim/dex-formats').FormatList = [{
 	searchShow: false,
 	challengeShow: false,
 	tournamentShow: false,
-	desc: 'Private bounded Gen9 adaptation: alpha or beta premade, level 50, IV31, EV0, Hardy, no held items or transformations. Not exact ROM fidelity.',
+	desc: 'Private bounded Gen9 adaptation: alpha or beta premade, level 50, IV31, EV0, Hardy, only catalog-listed items and Mega forms; no other transformations. Not exact ROM fidelity.',
 	ruleset: ['Terastal Clause', 'Team Preview', 'Min Team Size = 3', 'Max Team Size = 3', 'Min Level = 50', 'Default Level = 50', 'Max Level = 50', 'EV Limit = 0'],
 	validateTeam(team, options) {
 		if (this.format.customRules?.length) return ['TMT2 does not support custom rule overrides.'];
@@ -31,7 +31,8 @@ export const TMT2Formats: import('../sim/dex-formats').FormatList = [{
 		const record = Catalog.seed.species.find(s => s.id === this.dex.toID(set.species));
 		if (!record) return ['Species outside the bounded TMT2 seed.'];
 		if (!record.abilities.includes(this.dex.toID(set.ability))) return ['Ability outside the selected TMT2 set.'];
-		if (set.item && this.dex.toID(set.item) !== 'none') return ['Held items outside the TMT2 seed.'];
+		const expected = Catalog.seed.teams.flatMap(t => t.sets).find(s => s.species === record.id);
+		if ((this.dex.toID(set.item) || 'none') !== expected?.item) return ['Item outside the selected TMT2 set.'];
 		if (set.moves.some(m => !record.learnset.includes(this.dex.toID(m)))) {
 			return ['Move outside the selected TMT2 learnset.'];
 		}

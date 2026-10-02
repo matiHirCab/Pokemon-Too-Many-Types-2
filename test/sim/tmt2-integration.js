@@ -18,8 +18,8 @@ describe('TMT-05 hidden catalog integration (not battle fidelity)', () => {
 	});
 	it('resolves every selected record and rejects upstream-only catalog leakage', () => {
 		const dex = Dex.forFormat(catalog.metadata.formatID);
-		assert.equal(dex.species.all().length, 6);
-		for (const s of catalog.seed.species) {
+		assert.equal(dex.species.all().length, catalog.seed.species.length + (catalog.seed.forms?.length || 0));
+		for (const s of [...catalog.seed.species, ...(catalog.seed.forms || [])]) {
 			assert.deepEqual(dex.species.get(s.id).types, catalog.table.species[s.id].types);
 			assert.deepEqual(dex.species.get(s.id).baseStats, s.baseStats);
 			assert.deepEqual(Object.keys(dex.species.getLearnsetData(s.id).learnset).sort(), [...s.learnset].sort());

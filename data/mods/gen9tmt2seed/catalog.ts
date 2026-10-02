@@ -8,6 +8,10 @@ export interface SeedCatalog {
 	};
 	seed: {
 		teams: { id: string, sets: PokemonSet[] }[],
+		forms?: {
+			id: string, name: string, baseSpecies: string, forme: 'Mega', requiredItem: string,
+			types: string[], baseStats: StatsTable, abilities: string[], learnset: string[],
+		}[],
 		species: {
 			id: string, name: string, types: string[], baseStats: StatsTable, abilities: string[], learnset: string[],
 		}[],

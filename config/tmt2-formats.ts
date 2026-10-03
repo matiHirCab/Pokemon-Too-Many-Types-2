@@ -10,7 +10,7 @@ export const TMT2Formats: import('../sim/dex-formats').FormatList = [{
 	searchShow: false,
 	challengeShow: false,
 	tournamentShow: false,
-	desc: 'Private bounded Gen9 adaptation: alpha or beta premade, level 50, IV31, EV0, Hardy, only catalog-listed items and Mega forms; no other transformations. Not exact ROM fidelity.',
+	desc: 'Private bounded Gen9 adaptation: catalog premade, level 50, IV31, EV0, Hardy, only catalog-listed items and Mega forms; no other transformations. Not exact ROM fidelity.',
 	ruleset: ['Terastal Clause', 'Team Preview', 'Min Team Size = 3', 'Max Team Size = 3', 'Min Level = 50', 'Default Level = 50', 'Max Level = 50', 'EV Limit = 0'],
 	validateTeam(team, options) {
 		if (this.format.customRules?.length) return ['TMT2 does not support custom rule overrides.'];

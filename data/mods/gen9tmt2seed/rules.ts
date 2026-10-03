@@ -7,7 +7,7 @@ const fields = new Set(['name', 'species', 'ability', 'item', 'moves', 'nature',
 
 /** Raw input gate runs before Showdown can clamp levels or fill EVs. No ROM claim. */
 export function premadeProblems(team: PokemonSet[]): string[] {
-	if (!Array.isArray(team) || team.length !== 3) return ['TMT2 requires one complete alpha or beta premade (3 Pokémon).'];
+	if (!Array.isArray(team) || team.length !== 3) return ['TMT2 requires one complete catalog premade (3 Pokémon).'];
 	const problems: string[] = [];
 	for (const set of team) {
 		if (!set || typeof set !== 'object') return ['Invalid TMT2 set.'];
@@ -41,7 +41,7 @@ export function premadeProblems(team: PokemonSet[]): string[] {
 	}
 	const roster = team.map(s => toID(s?.species)).sort().join();
 	if (!Catalog.seed.teams.some(t => t.sets.map(s => s.species).sort().join() === roster)) {
-		problems.push('Use the complete alpha or beta roster; mixed/duplicate species are not supported.');
+		problems.push('Use a complete catalog premade roster; mixed/duplicate species are not supported.');
 	}
 	return problems;
 }
